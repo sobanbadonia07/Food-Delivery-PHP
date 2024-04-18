@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Summary</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header>
+    <h1>Order Summary</h1>
+  </header>
+  <?php
+  $displayMenuItems=$_POST['selectedMenuItems'];
+  $displayMenuItems=$_POST['selectedRestaurantName'];
+  echo $displayMenuItems.$displayMenuItems;
+  ?>
+  
+  
+  <main>
+    <div id="order-details">
+      <h2>Order Details</h2>
+      <p><strong>Restaurant Name:</strong> <span id="display_restaurant"></span></p>
+      <p><strong>Menu Items Selected:</strong></p>
+      <ul id="display_selected_items"></ul>
+      <p><strong>Total Price:</strong> $<span id="total-price"></span></p>
+    </div>
+    <form id="membership-form">
+      <h2>Membership</h2>
+      <label for="membership">Select Membership:</label>
+      <select name="membership" id="membership">
+        <option value="basic">Basic</option>
+        <option value="premium">Premium</option>
+      </select>
+      <button type="submit">Apply Membership</button>
+    </form>
+    <div id="discount-info" style="display: none;">
+      <h2>Discount Information</h2>
+      <p><strong>Membership:</strong> <span id="membership-type"></span></p>
+      <p><strong>Discount Applied:</strong> <span id="discount-amount"></span></p>
+      <p><strong>Final Price:</strong> $<span id="final-price"></span></p>
+    </div>
+    <button id="pay-button">Pay</button>
+  </main>
+  <footer>
+    <p>&copy; 2024 Restaurant Finder. All rights reserved.</p>
+  </footer>
+  
+  <script src="restaurant.js"></script>
+<!--<script src="order.js"></script>-->
+  
+</body>
+</html>
