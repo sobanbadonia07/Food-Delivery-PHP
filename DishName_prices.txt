@@ -82,4 +82,5 @@
 82~Bacon and Eggs~4.4
 83~Milkshakes~4.0
 84~Waffles~4.5
-85~Burrito~4.5
+85~Burrito~4.4
+86~Belgian Delight~4.4
