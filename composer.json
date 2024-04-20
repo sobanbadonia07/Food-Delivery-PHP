@@ -1,0 +1,15 @@
+{
+    "name": "nm836/Food-Delivery-PHP",
+    "description": "A brief description of your project",
+    "type": "project",
+    "license": "MIT",
+    "require": {
+        "php": "^7.4",
+        "vendor/package-name": "^version"
+    },
+    "autoload": {
+        "psr-4": {
+            "YourNamespace\\": "src/"
+        }
+    }
+}
