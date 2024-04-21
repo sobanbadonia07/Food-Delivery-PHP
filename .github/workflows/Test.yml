@@ -1,0 +1,22 @@
+name: PHP Test
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+      
+    - name: Set up PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '7.4' # Choose your PHP version
+
+    - name: Install Composer dependencies
+      run: composer install
+
+    - name: Run PHP tests
+      run: phpunit
