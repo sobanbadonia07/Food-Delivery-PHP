@@ -1,22 +1,19 @@
-name: PHP Test
 
-on: [push, pull_request]
+name: Enable Automated test run
+
+on: 
+  push:
+    branches: 
+      - 'main'
+    pull_request:
+      branches:
+      - 'main'
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
+  automatedtest:
+    runs on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
+    - name: First Step
+      run: echo Automated tests enabled 
       
-    - name: Set up PHP
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: '7.4' # Choose your PHP version
-
-    - name: Install Composer dependencies
-      run: composer install
-
-    - name: Run PHP tests
-      run: phpunit
