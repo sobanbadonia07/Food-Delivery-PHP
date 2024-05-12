@@ -35,7 +35,7 @@ jobs:
         python -m pip install pytest
 
     - name: Run Tests with Selenium
-      run: pytest UT11.py
+      run: unittest UT11.py
 
 
 
