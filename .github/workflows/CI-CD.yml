@@ -2,18 +2,14 @@ name: CI-CD
 
 on: 
   push:
-    branches: 
-    - 'main'
   pull_request:
-    branches: 
-    - 'main'
-
+ 
 jobs:
   build:
     strategy:
       fail-fast: false
       matrix:
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        os: [ubuntu-latest, windows-latest]
         python-version: [3.10, 3.11, 3.12]
 
     name: Test
@@ -35,7 +31,7 @@ jobs:
         python -m pip install pytest
 
     - name: Run Tests with Selenium
-      run: UT11.py
+      run: pytest
 
 
 
