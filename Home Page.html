@@ -1,22 +1,22 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Get Delivered</title>
   <link rel="stylesheet" href="styles.css">
   <style>
-    /* Additional CSS styles for improved aesthetics */
     body {
       font-family: Arial, sans-serif;
-      background-color: #f8f9fa;
+      background-color: #fffdf5;
+      color: #2b8a3e;
       margin: 0;
-      padding: 0;
+      padding-top: 10px;
+      padding-bottom: 30px;
+      font-weight: bold;
     }
 
     header {
-      background-color: #488a82;
-      color: #fff;
+      background-color: #2b8a3e;
+      color: #fffdf5;
       padding: 20px;
       text-align: center;
     }
@@ -43,20 +43,41 @@
       text-align: center;
       padding: 20px;
     }
+    
+    .main-container {
+      display: flex;
+      flex-direction: column;
+      gap: 50px;
+      padding-top: 80px;
+    }
+    
+    .container {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      box-shadow: 0px 0px 20px #e9ecef;
+      border-radius: 10px;
+      padding: 20px;
+      transition: transform 0.3s ease-in-out;
+    }
 
-    footer {
-      background-color: #488a82;
-      color: #fff;
-      text-align: center;
+    .container:hover {
+      transform: scale(1.05);
+    }
+
+    .container img {
+      width: 120px;
+      height: 120px;
       padding: 10px;
-      position: fixed;
-      bottom: 0;
-      width: 100%;
+      border-radius: 20px;
+      margin-right: 20px;
+    }
+	
+
+    .container div {
+      font-size: 20px;
     }
 
-    footer p {
-      margin: 0;
-    }
   </style>
 </head>
 <body>
@@ -64,24 +85,33 @@
     <h1>Get Delivered</h1>
     <nav>
       <ul>
-        <li><a href="restaurants php.php" target="_blank">Customer</a></li>
-        <li><a href="restaurantEdit.html" target="_blank">Restaurant Edit</a></li>
-        <li><a href="deliveryPerson.html" target="_blank">Delivery</a></li>
-        <li><a href="TrackOrder.html" target="_blank">Track Orders</a></li>
+        <li><a href="Home Page.html" target="_self">Home Page</a></li>
+        <li><a href="customer.php" target="_self">Customer</a></li>
+        <li><a href="restaurant.php" target="_self">Restaurant Edit</a></li>
+        <li><a href="trackorder.php" target="_self">Track Orders</a></li>
       </ul>
     </nav>
   </header>
   <main>
-    
-	<p>
-    <img src="Homepage Picture.jpg" alt="Delivery" width="500" align="left" style="padding-right: 20px">
-	<h2>Welcome to Get Delivered!</h2>
-    <p>Order your favorite food from the comfort of your home.</p>
-	<p style='padding:2	0px;'> Get Delivered" is a food delivery application designed to provide users with a convenient way to order their favorite food from a variety of restaurants and have it delivered to their doorstep. The application offers a seamless user experience with its intuitive interface and efficient order tracking system.</p>
-	</p>
+    <img src="Homepage Picture.jpg" alt="Delivery" width="500" height="950" align="left" style="padding-right: 100px;">
+    <div class="main-container">
+      <div class="container">
+        <img src="display1.png" alt="Order from home">
+        <div>Enjoy ordering your favorites from home</div>
+      </div>
+      <div class="container">
+        <img src="display2.png" alt="Wide range of cuisines">
+        <div>Choose from a wide range of cuisines</div>
+      </div>
+      <div class="container">
+        <img src="display3.png" alt="Real-time tracking">
+        <div>Monitor your order with real-time tracking</div>
+      </div>
+      <div class="container">
+        <img src="display4.png" alt="Loyal member discounts">
+        <div>Receive discounts as a loyal member</div>
+      </div>
+    </div>
   </main>
-  <footer>
-    <p>&copy; 2024 Get Delivered. All rights reserved.</p>
-  </footer>
 </body>
 </html>
