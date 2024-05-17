@@ -1,3 +1,0 @@
-print("This is a test")
-print("This is a build test")
-print("Automated build run check 2.0")
