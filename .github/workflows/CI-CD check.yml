@@ -22,11 +22,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install selenium
           pip install pytest
-        
-          
+          pip install selenium
       - name: Run unit tests
         run: python U1.py
-
-  
