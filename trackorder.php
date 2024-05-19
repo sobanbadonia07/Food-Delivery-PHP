@@ -48,7 +48,7 @@
       justify-content: space-between;
       align-items: center;
       padding: 20px;
-	  background-color: #fffdf5;
+      background-color: #fffdf5;
     }
 
     .container {
@@ -67,7 +67,7 @@
     }
 
     .image-container img {
-      width:900px;
+      width: 900px;
       height: 800px;
       border-radius: 10px;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
@@ -83,14 +83,15 @@
         <li><a href="customer.php" target="_self">Customer</a></li>
         <li><a href="restaurant.php" target="_self">Restaurant Edit</a></li>
         <li><a href="trackorder.php" target="_self">Track Orders</a></li>
+        <li><a href="delivery.php" target="_self">Delivery</a></li>
       </ul>
     </nav>
   </header>
   <div class="main-content">
     <div class="container">
       <h1>Track Your Order</h1>
-	  <img src="tracking.jpg" style="width:300px;height:250px"/>
-	  <br/>
+      <img src="tracking.jpg" style="width:300px;height:250px"/>
+      <br/>
 
       <form method="post">
         <label for="orderNumber">Enter your order number:</label>
@@ -108,25 +109,66 @@
         } elseif ($minutesElapsed < 10) {
           return "Order is on the way.";
         } else {
-          return "Order delivered.";
+          return "Order delivered";
         }
       }
 
-      if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['orderNumber'])) {
+      $reviewSubmitted = false;
+
+      if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['submitReview']) && isset($_POST['orderNumber'])) {
+        $orderNumber = $_POST['orderNumber'];
+        $review = trim($_POST['review']);
+        if (!empty($review)) {
+          $file = fopen("reviews.txt", "a");
+          fwrite($file, "$orderNumber|$review\n");
+          fclose($file);
+          $reviewSubmitted = true;
+          echo "<p>Thank you for your review!</p>";
+        } else {
+          echo "<p>Review cannot be empty.</p>";
+        }
+      } elseif ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['orderNumber'])) {
         $orderNumber = $_POST['orderNumber'];
         $found = false;
         $currentTime = time();
 
         if (($file = fopen("track.txt", "r")) !== FALSE) {
           while (($line = fgets($file)) !== false) {
-            list($fileOrderNumber, $orderTime) = explode("|", trim($line));
-            if ($fileOrderNumber == $orderNumber) {
+        //list($storedOrderNumber, $orderTime, $status) = explode("|", trim($line));
+		$newfile= explode("|", trim($line));
+		$OrdNo=$newfile[0];
+		$orderTime=$newfile[1];
+		$status=$newfile[2];
+		
+        if ($orderNumber == $OrdNo) {
               $orderTimestamp = strtotime($orderTime);
               $minutesElapsed = floor(($currentTime - $orderTimestamp) / 60);
-              $status = getRandomStatus($minutesElapsed);
-              echo "<p>Order #$orderNumber was placed at: $orderTime.</p>";
-			  echo "Current status: $status</p>";
+              
+              echo "<p>Order #$OrdNo was placed at: $orderTime.</p>";
+			  
+			  if ($status=='Delivered' || $reviewSubmitted){
+              echo "<p>Current status: $status</p>";
+			  echo '<form method="post">';
+                echo '<label for="review">Write a review:</label><br>';
+                echo '<textarea id="review" name="review" rows="4" cols="50" required></textarea><br>';
+                echo '<input type="hidden" name="orderNumber" value="'.htmlspecialchars($orderNumber).'">';
+                echo '<button type="submit" name="submitReview">Submit Review</button>';
+                echo '</form>';
+				}
+			  else {
+			  $status = getRandomStatus($minutesElapsed);
+			  if ($status=='Order delivered'){echo '<form method="post">';
+			  echo "<p>Current status: $status</p>";
+                echo '<label for="review">Write a review:</label><br>';
+                echo '<textarea id="review" name="review" rows="4" cols="50" required></textarea><br>';
+                echo '<input type="hidden" name="orderNumber" value="'.htmlspecialchars($orderNumber).'">';
+                echo '<button type="submit" name="submitReview">Submit Review</button>';
+                echo '</form>';}else 
+			  echo "<p>Current status: $status</p>";
+			  }
               $found = true;
+              
+              
               break;
             }
           }

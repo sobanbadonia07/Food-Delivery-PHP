@@ -71,57 +71,117 @@
                 <li><a href="customer.php">Customer</a></li>
                 <li><a href="restaurant.php">Restaurant Edit</a></li>
                 <li><a href="trackorder.php">Track Orders</a></li>
+				<li><a href="delivery.php" target="_self">Delivery</a></li>
             </ul>
         </nav>
     </header>
     <main>
+        <form method="GET">
+            <label for="keyword">Keyword:</label>
+            <input type="text" id="keyword" name="keyword">
+            <label for="distance">Distance (km):</label>
+            <input type="number" id="distance" name="distance" step="0.1" min="0">
+            <label for="category">Category:</label>
+            <select id="category" name="category">
+                <option value="">All</option>
+                <?php
+                $categories = [];
+                $fileInputs = fopen("rest.txt", "r");
+                if ($fileInputs !== false) {
+                    while (!feof($fileInputs)) {
+                        $restName = trim(fgets($fileInputs));
+                        if ($restName == "") continue;
+                        $restCategory = trim(fgets($fileInputs));
+                        $restDistance = trim(fgets($fileInputs));
+                        $restEmail = trim(fgets($fileInputs));
+                        $restPhone = trim(fgets($fileInputs));
+                        $restCode = trim(fgets($fileInputs));
+                        if (!in_array($restCategory, $categories)) {
+                            $categories[] = $restCategory;
+                        }
+                    }
+                    fclose($fileInputs);
+                }
+                foreach ($categories as $category) {
+                    echo "<option value=\"$category\">" . htmlspecialchars($category) . "</option>";
+                }
+                ?>
+            </select>
+            <button type="submit">Search</button>
+        </form>
         <div class="cards-container">
             <?php
+            function searchMatch($keyword, $category, $distance, $name, $restCategory, $restDistance) {
+                $match = true;
+                if ($keyword && stripos($name, $keyword) === false) {
+                    $match = false;
+                }
+                if ($category && $category != $restCategory) {
+                    $match = false;
+                }
+                if ($distance && floatval($restDistance) > floatval($distance)) {
+                    $match = false;
+                }
+                return $match;
+            }
+
+            $keyword = isset($_GET['keyword']) ? $_GET['keyword'] : '';
+            $distance = isset($_GET['distance']) ? $_GET['distance'] : '';
+            $category = isset($_GET['category']) ? $_GET['category'] : '';
+
             $fileInputs = fopen("rest.txt", "r");
             if ($fileInputs !== false) {
                 while (!feof($fileInputs)) {
                     $restName = trim(fgets($fileInputs));
                     if ($restName == "") continue;
+                    $restCategory = trim(fgets($fileInputs));
+                    $restDistance = trim(fgets($fileInputs));
                     $restEmail = trim(fgets($fileInputs));
                     $restPhone = trim(fgets($fileInputs));
                     $restCode = trim(fgets($fileInputs));
                     $imageName = $restCode . ".jpg";
 
-                    echo "<div class='card'>";
-                    echo "<img src='$imageName'>";
-                    echo "<h3>$restName</h3>";
-                    echo "<form method='post' action='order.php'>";
-                    echo "<table>";
-                    $menuInputs = fopen("menu.txt", "r");
-                    if ($menuInputs !== false) {
-                        while (!feof($menuInputs)) {
-                            $itemCode = trim(fgets($menuInputs));
-                            if ($itemCode == "") continue;
-                            $itemName = trim(fgets($menuInputs));
-                            $itemPrice = trim(fgets($menuInputs));
-                            $itemRest = trim(fgets($menuInputs));
+                    if (searchMatch($keyword, $category, $distance, $restName, $restCategory, $restDistance)) {
+                        echo "<div class='card'>";
+                        echo "<img src='$imageName'>";
+                        echo "<h3>$restName</h3>";
+                        echo "<p><small>Category: $restCategory
+                         Distance: $restDistance km</small></p>";
+                        echo "<form method='post' action='order.php'>";
+                        echo "<table>";
+                        $menuInputs = fopen("menu.txt", "r");
+                        if ($menuInputs !== false) {
+                            while (!feof($menuInputs)) {
+                                $itemCode = trim(fgets($menuInputs));
+                              if ($itemCode == "") continue;
+                                $itemName = trim(fgets($menuInputs));
+                                $itemPrice = trim(fgets($menuInputs));
+                                $itemRest = trim(fgets($menuInputs));
 
-                            if ($restCode == $itemRest) {
-                                echo "<tr>";
-                                echo "<td><input type='checkbox' name='selectedItems[]' value='$itemName|$itemPrice'></td>";
-                                echo "<td>" . htmlspecialchars($itemName) . "</td>";
-                                echo "<td>" . htmlspecialchars($itemPrice) . "</td>";
-                                echo "</tr>";
+                                if ($restCode == $itemRest) {
+                                    echo "<tr>";
+                                    echo "<td><input type='checkbox' name='selectedItems[]' value='$itemName|$itemPrice'></td>";
+                                    echo "<td>" . ucfirst(htmlspecialchars($itemName)) . "</td>";
+                                    echo "<td>$ " . htmlspecialchars($itemPrice) . "</td>";
+                                    echo "</tr>";
+                                }
                             }
+                            fclose($menuInputs);
                         }
-                        fclose($menuInputs);
+                        echo "</table>";
+                        $orderNumber = rand(10000, 99999);
+                        echo "<input type='hidden' name='restCode' value='$restCode'>";
+                        echo "<input type='hidden' name='orderNumber' value='$orderNumber'>";
+                        echo "<input type='submit' name='order' value='Order'>";
+                        echo "</form>";
+                        echo "</div>";
                     }
-                    echo "</table>";
-                    $orderNumber = rand(10000, 99999);
-                    echo "<input type='hidden' name='restCode' value='$restCode'>";
-                    echo "<input type='hidden' name='orderNumber' value='$orderNumber'>";
-                    echo "<input type='submit' value='Order'>";
-                    echo "</form>";
-                    echo "</div>";
                 }
                 fclose($fileInputs);
             }
-            ?>
+             
+			
+			?>
         </div>
     </main>
 </body>
