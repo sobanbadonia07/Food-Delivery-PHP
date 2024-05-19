@@ -4,7 +4,7 @@ session_start();
 $finalPrice = $totalPrice = 0.0;
 $orders = [];
 $orderNumber = $_POST['orderNumber'] ?? 'Unknown';
-
+//$restNo=$_POST['restCode'];
 if (!empty($_POST['selectedItems'])) {
     foreach ($_POST['selectedItems'] as $item) {
         list($itemName, $itemPrice) = explode('|', $item);
@@ -25,11 +25,22 @@ if (isset($_POST['proceed'])) {
     $currentTime = date('Y-m-d H:i:s');
     // Save to track.txt
     $file = fopen("track.txt", "a");
-    fwrite($file, $orderNumber . "|" . $currentTime . "\n");
+    fwrite($file, $orderNumber . "|" . $currentTime . "|Under Process\n");
     fclose($file);
 
-    // Redirect to trackorder.php or another appropriate action
-    header('Location: trackorder.php?orderNumber=' . urlencode($orderNumber));
+    // Save order details to order.txt
+    $orderDetails = "$orderNumber\n";
+    $orderDetails .= "$currentTime\n";
+	$orderDetails .= "$restNo\n";
+    foreach ($orders as $order) {
+        $orderDetails .= "Item: " . $order['itemName'] . ", Price: $" . number_format($order['itemPrice'], 2) . "\n";
+    }
+    $orderDetails .= "Total Price: $" . number_format($finalPrice, 2) . "\n\n";
+    $orderDetails .= "";
+    file_put_contents("order.txt", $orderDetails, FILE_APPEND);
+
+    // Redirect to Order.Message.php
+    header('Location: OrderMessage.php?orderNumber=' . urlencode($orderNumber));
     exit;
 }
 ?>
@@ -77,7 +88,7 @@ if (isset($_POST['proceed'])) {
             padding: 20px;
         }
 		
-		main li{
+		main li {
 			list-style-type: none;
 		}
     </style>
@@ -87,11 +98,12 @@ if (isset($_POST['proceed'])) {
         <h1>Get Delivered</h1>
         <nav>
             <ul>
-                <li><a href="HomePage.html">Home Page</a></li>
+                <li><a href="Home Page.html">Home Page</a></li>
                 <li><a href="customer.php">Customer</a></li>
                 <li><a href="restaurant.php">Restaurant Edit</a></li>
                 <li><a href="delivery.php">Delivery</a></li>
                 <li><a href="trackorder.php">Track Orders</a></li>
+				<li><a href="delivery.php" target="_self">Delivery</a></li>
             </ul>
         </nav>
     </header>
@@ -113,9 +125,15 @@ if (isset($_POST['proceed'])) {
             <label><input type="radio" name="discount" value="15">15% Discount</label>
             <button type="submit" name="applyDiscount">Apply Discount</button>
         </form>
-		<p>Final Total: $<?php echo number_format($finalPrice, 2); ?></p>
-        <form method="post">
+        <p>Final Total: $<?php echo number_format($finalPrice, 2); ?></p>
+        <form method="post" >
             <input type="hidden" name="orderNumber" value="<?php echo htmlspecialchars($orderNumber); ?>">
+            <input type="hidden" name="finalPrice" value="<?php echo number_format($finalPrice, 2); ?>">
+			<input type="hidden" name="restCode" value="<?php echo isset($_POST['restCode']); ?>" >
+            <?php foreach ($orders as $order) {
+                echo "<input type='hidden' name='selectedItems[]' value='" . htmlspecialchars($order['itemName'] . "|" . $order['itemPrice']) . "'>";
+				
+            } ?>
             <button type="submit" name="proceed">Proceed to Pay</button>
         </form>
     </main>
