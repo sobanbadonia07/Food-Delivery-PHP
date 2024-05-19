@@ -3,10 +3,10 @@ name: CI-CD Test
 on:
   pull_request:
     branches:
-      - nm836-V3
+      - main
   push:
     branches:
-      - nm836-V3
+      - main
 
 jobs:
 
