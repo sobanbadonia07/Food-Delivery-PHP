@@ -25,6 +25,6 @@ jobs:
           pip install pytest
           pip install selenium
       - name: Run unit tests
-        run: U1.py
+        run: python U1.py
 
   
