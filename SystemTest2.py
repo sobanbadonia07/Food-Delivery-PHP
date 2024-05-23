@@ -9,8 +9,8 @@ import os
 
 @pytest.fixture(scope="module")
 def driver():
-    #service = Service(executable_path="chromedriver.exe")
-    service = Service(executable_path=os.environ.get('CHROMEDRIVER_PATH'))
+    service = Service(executable_path="chromedriver.exe")
+    #service = Service(executable_path=os.environ.get('CHROMEDRIVER_PATH'))
     driver = webdriver.Chrome(service=service)
     driver.implicitly_wait(10)
     yield driver
