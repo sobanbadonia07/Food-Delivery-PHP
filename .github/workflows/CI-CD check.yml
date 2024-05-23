@@ -25,12 +25,6 @@ jobs:
           pip install pytest
           pip install selenium
           
-      - name: Install Chromium Browser
-        uses: microsoft/playwright-driver-installer@v0
-      
-      - name: Set ChromeDriver Path
-        run: echo "CHROMEDRIVER_PATH=$(pwd)/playwright/chrome/$(./playwright/chrome/chrome --version | awk '{print $4}')-linux/chrome-linux/chrome" >> $GITHUB_ENV
-        
       - name: Run unit tests
         run: python U1.py
 
@@ -48,12 +42,13 @@ jobs:
           python -m pip install --upgrade pip
           pip install pytest
           pip install selenium
-      
-      - name: Install Chromium Browser
-        uses: microsoft/playwright-driver-installer@v0
-      
+   
+      - name: Download ChromeDriver
+        run: |
+          curl -L https://github.com/{sobanbadonia07}/{https://github.com/sobanbadonia07/Food-Delivery-PHP.git}/raw/main/{https://github.com/sobanbadonia07/Food-Delivery-PHP/chromedriver.exe}/chromedriver.exe --output chromedriver.exe
+    
       - name: Set ChromeDriver Path
-        run: echo "CHROMEDRIVER_PATH=$(pwd)/playwright/chrome/$(./playwright/chrome/chrome --version | awk '{print $4}')-linux/chrome-linux/chrome" >> $GITHUB_ENV
+        run: echo "CHROMEDRIVER_PATH=$(pwd)/chromedriver.exe" >> $GITHUB_ENV
         
       - name: Run integration tests
         run: python IntegrationTest.py
@@ -78,12 +73,12 @@ jobs:
           pip install pytest 
           pip install selenium
 
-      - name: Install Chromium Browser
-        uses: microsoft/playwright-driver-installer@v0
-      
+      - name: Download ChromeDriver
+        run: |
+          curl -L https://github.com/{sobanbadonia07}/{https://github.com/sobanbadonia07/Food-Delivery-PHP.git}/raw/main/{https://github.com/sobanbadonia07/Food-Delivery-PHP/chromedriver.exe}/chromedriver.exe --output chromedriver.exe
+    
       - name: Set ChromeDriver Path
-        run: echo "CHROMEDRIVER_PATH=$(pwd)/playwright/chrome/$(./playwright/chrome/chrome --version | awk '{print $4}')-linux/chrome-linux/chrome" >> $GITHUB_ENV
-        
+        run: echo "CHROMEDRIVER_PATH=$(pwd)/chromedriver.exe" >> $GITHUB_ENV
       - name: Install browser drivers
         run: |
           if [ "${{ matrix.browser }}" == "chrome" ]; then
