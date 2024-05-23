@@ -27,8 +27,8 @@ logging.info("Test session started")
 
 @pytest.fixture(scope="module")
 def driver():
-    #service = Service(executable_path="chromedriver.exe")
-    service = Service(executable_path=os.environ.get('CHROMEDRIVER_PATH'))
+    service = Service(executable_path="chromedriver.exe")
+    #service = Service(executable_path=os.environ.get('CHROMEDRIVER_PATH'))
     driver = webdriver.Chrome(service=service)
     driver.base_url = "http://localhost/food%20delivery%20v5/"
     driver.implicitly_wait(30)
