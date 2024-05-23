@@ -11,8 +11,8 @@ import os
 
 class TestWebsiteIntegration(unittest.TestCase):
     def setUp(self):
-        #service = Service(executable_path="chromedriver.exe")
-        service = Service(executable_path=os.environ.get('CHROMEDRIVER_PATH'))
+        service = Service(executable_path="chromedriver.exe")
+        #service = Service(executable_path=os.environ.get('CHROMEDRIVER_PATH'))
         self.driver = webdriver.Chrome(service=service)
         self.base_url = "http://localhost/food%20delivery%20v5/"
         self.driver.implicitly_wait(10)
