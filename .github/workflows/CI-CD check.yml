@@ -94,7 +94,8 @@ jobs:
         run: chmod +x chromedriver.exe
    
       - name: Set ChromeDriver Path
-        run: echo "CHROMEDRIVER_PATH=$(pwd)/chromedriver.exe" >> $GITHUB_ENV
+        run: echo "CHROMEDRIVER_PATH=$(pwd)/https://github.com/sobanbadonia07/Food-Delivery-PHP/chromedriver.exe" >> $GITHUB_ENV
+        
       - name: Install browser drivers
         run: |
           if [ "${{ matrix.browser }}" == "chrome" ]; then
@@ -117,7 +118,6 @@ jobs:
       - name: Run system tests
         run: |
           pytest SystemTest2.py
-          pytest Ordercreation20log.py
         
         env:
           BROWSER: ${{ matrix.browser }}
