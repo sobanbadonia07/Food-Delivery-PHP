@@ -99,10 +99,9 @@ jobs:
             fi
           fi
       - name: Run system tests
-        run: pytest SystemTest2.py
-        
-      - name: Run System tests2
-        run: pytest Ordercreation20log.py
+        run: |
+          pytest SystemTest2.py
+          pytest Ordercreation20log.py
         
         env:
           BROWSER: ${{ matrix.browser }}
