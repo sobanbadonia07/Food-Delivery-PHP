@@ -24,6 +24,10 @@ jobs:
           python -m pip install --upgrade pip
           pip install pytest
           pip install selenium
+          
+      - name: Install Chromium Browser
+        uses: microsoft/playwright-driver-installer@v0
+        
       - name: Run unit tests
         run: python U1.py
 
